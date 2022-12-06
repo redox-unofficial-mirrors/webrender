@@ -124,6 +124,10 @@ pub fn main_wrapper<E: Example>(
         None
     };
 
+    // Hack to fix Redox, which defaults to OpenGL 3.1 for some reason
+    #[cfg(target_os = "redox")]
+    std::env::set_var("MESA_GL_VERSION_OVERRIDE", "3.2");
+
     let mut events_loop = winit::event_loop::EventLoop::new();
     let window_builder = winit::window::WindowBuilder::new()
         .with_title(E::TITLE)
