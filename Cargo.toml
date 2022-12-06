@@ -23,5 +23,6 @@ opt-level = 2
 
 [patch.crates-io]
 fog = { path = "fog" }
-# use a patched version of glutin that works on android
-glutin = { version = "0.28", git = "https://github.com/jamienicol/glutin", branch="wr" }
+glutin = { git = "https://gitlab.redox-os.org/redox-os/glutin.git", branch = "redox-0.29" }
+osmesa-sys = { git = "https://gitlab.redox-os.org/redox-os/osmesa-rs.git", branch = "redox" }
+winit = { git = "https://gitlab.redox-os.org/redox-os/winit.git", branch = "redox-0.27" }

@@ -151,13 +151,15 @@ fn write_optimized_shaders(shader_dir: &Path, shader_file: &mut File, out_dir: &
         }
     }
 
-    let outputs = build_parallel::compile_objects(&|shader: &ShaderOptimizationInput| {
+    let outputs = build_parallel::compile_objects(&|shader: &ShaderOptimizationInput| -> Result<_, ()> {
+        /*
         println!("Optimizing shader {:?}", shader);
         let target = match shader.gl_version {
             ShaderVersion::Gl => glslopt::Target::OpenGl,
             ShaderVersion::Gles => glslopt::Target::OpenGles30,
         };
         let glslopt_ctx = glslopt::Context::new(target);
+        */
 
         let features = shader.config.split(",").filter(|f| !f.is_empty()).collect::<Vec<_>>();
 
@@ -174,6 +176,7 @@ fn write_optimized_shaders(shader_dir: &Path, shader_file: &mut File, out_dir: &
             format!("{}_{}", shader.shader_name, shader.config.replace(",", "_"))
         };
 
+        /*
         let vert = glslopt_ctx.optimize(glslopt::ShaderType::Vertex, vert_src.clone());
         if !vert.get_status() {
             print_shader_source(&vert_src);
@@ -193,6 +196,10 @@ fn write_optimized_shaders(shader_dir: &Path, shader_file: &mut File, out_dir: &
 
         let vert_source = vert.get_output().unwrap();
         let frag_source = frag.get_output().unwrap();
+        */
+
+        let vert_source = &vert_src;
+        let frag_source = &frag_src;
 
         // Compute a digest of the optimized shader sources. We store this
         // as a literal alongside the source string so that we don't need
@@ -249,9 +256,11 @@ fn write_optimized_shaders(shader_dir: &Path, shader_file: &mut File, out_dir: &
             }
         }
         Err(err) => match err {
+            /*
             build_parallel::Error::BuildError(err) => {
                 panic!("Error optimizing shader {:?}: {}", err.shader, err.message)
             }
+            */
             _ => panic!("Error optimizing shaders."),
         }
     }
